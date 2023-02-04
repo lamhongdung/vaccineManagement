@@ -50,7 +50,10 @@ public class UserResource extends ExceptionHandling {
 
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody User user) {
+        // if username or password is invalid then throw an exception
         authenticate(user.getUsername(), user.getPassword());
+
+        // authenticate success(username and password are correct)
         User loginUser = userService.findUserByUsername(user.getUsername());
         UserPrincipal userPrincipal = new UserPrincipal(loginUser);
         HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
@@ -89,13 +92,6 @@ public class UserResource extends ExceptionHandling {
         User updatedUser = userService.updateUser(currentUsername, firstName, lastName, username,email, role, Boolean.parseBoolean(isNonLocked), Boolean.parseBoolean(isActive), profileImage);
         return new ResponseEntity<>(updatedUser, OK);
     }
-
-    @GetMapping("/home")
-    public String home() throws UsernameExistException {
-//        return "hello";
-        throw new UsernameExistException("This is error dunglh!");
-    }
-
 
     @GetMapping("/find/{username}")
     public ResponseEntity<User> getUser(@PathVariable("username") String username) {

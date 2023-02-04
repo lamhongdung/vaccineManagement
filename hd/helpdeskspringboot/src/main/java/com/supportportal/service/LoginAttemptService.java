@@ -9,10 +9,13 @@ import java.util.concurrent.ExecutionException;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 
+// lock account after n times attempt failed
 @Service
 public class LoginAttemptService {
     private static final int MAXIMUM_NUMBER_OF_ATTEMPTS = 5;
     private static final int ATTEMPT_INCREMENT = 1;
+
+    // user and number of attempts
     private LoadingCache<String, Integer> loginAttemptCache;
 
     public LoginAttemptService() {
